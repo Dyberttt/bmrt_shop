@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234609322232",
+    "project_id": "bmrtshop-b3bb5",
+    "storage_bucket": "bmrtshop-b3bb5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234609322232:android:b624cd522c789954bb730d",
+        "android_client_info": {
+          "package_name": "com.example.bmrt_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMohwNB3E_Mw8RoHZxLOES1MH1aiv9lbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
