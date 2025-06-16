@@ -1,11 +1,11 @@
 {
-    "name": "bmrt_shop",
-    "short_name": "bmrt_shop",
+    "name": "BMRT Shop",
+    "short_name": "BMRT Shop",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F8F8F8",
+    "theme_color": "#1A1A1A",
+    "description": "Aplikasi BMRT Shop",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
