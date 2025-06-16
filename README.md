@@ -115,7 +115,7 @@ lib/
 ## 👥 Tim Pengembang
 
 ### Anggota Kelompok
-1. Adam Dalfato - 22101152610000
+1. Adam Dalfato - 22101152610291
 2. Benny Aprijuanda - 22101152610298
 3. Firman Chandra - 22101152610306
 4. Rozy Dinata - 22101152610326
