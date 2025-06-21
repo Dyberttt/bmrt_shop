@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   static const Color mainThemeColor = Color(0xFF171717);
@@ -86,5 +87,13 @@ class Utils {
     
     // Default fallback image
     return 'assets/bmrt.png';
+  }
+
+  static String formatRupiah(num number, {int decimalDigits = 0}) {
+    return NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: decimalDigits,
+    ).format(number);
   }
 }

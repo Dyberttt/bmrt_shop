@@ -62,7 +62,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Rp ${total.toStringAsFixed(0)}',
+                    Utils.formatRupiah(total),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -725,7 +725,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Rp ${(item.price * item.quantity).toStringAsFixed(0)}',
+                    Utils.formatRupiah(item.price * item.quantity),
                     style: const TextStyle(
                       fontSize: 15,
                       color: Color(0xFF1A1A1A),
@@ -775,7 +775,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
           Text(
-            'Rp ${value.toStringAsFixed(0)}',
+            Utils.formatRupiah(value),
             style: TextStyle(
               fontWeight: isBold ? FontWeight.w600 : FontWeight.w500,
               fontSize: 16,

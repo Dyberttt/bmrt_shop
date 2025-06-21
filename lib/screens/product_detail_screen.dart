@@ -31,14 +31,8 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 28),
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.pushReplacementNamed(context, '/main');
-            }
-          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
           padding: const EdgeInsets.only(left: 16),
         ),
         actions: [
@@ -188,7 +182,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        'Rp ${product.price.toStringAsFixed(0)}',
+                        Utils.formatRupiah(product.price),
                         style: const TextStyle(
                           fontSize: 28,
                           color: Color(0xFF171717),
@@ -199,7 +193,7 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       if (product.discount != null) ...[
                         const SizedBox(width: 8),
                         Text(
-                          'Rp ${(product.price * (1 - ((product.discount ?? 0) / 100))).toStringAsFixed(0)}',
+                          Utils.formatRupiah(product.price * (1 - ((product.discount ?? 0) / 100))),
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[400],

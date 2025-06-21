@@ -28,23 +28,8 @@ class WishlistScreen extends StatelessWidget {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade300, width: 1.2),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
-          ),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
         ),
       ),
       body: wishlist.wishlistItems.isEmpty
@@ -114,12 +99,12 @@ class WishlistScreen extends StatelessWidget {
                             children: [
                               const SizedBox(height: 4),
                               Text(
-                                'Rp ${product.price.toStringAsFixed(0)}',
+                                Utils.formatRupiah(product.price),
                                 style: const TextStyle(fontSize: 14, color: Utils.mainThemeColor, fontWeight: FontWeight.bold),
                               ),
                               if ((product.discount ?? 0) > 0)
                                 Text(
-                                  'Rp ${product.priceBeforeDiscount.toStringAsFixed(0)}',
+                                  Utils.formatRupiah(product.priceBeforeDiscount),
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,

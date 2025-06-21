@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bmrt_shop/models/transaction.dart';
+import 'package:bmrt_shop/utils/utils.dart';
 
 class TransactionDetailScreen extends StatelessWidget {
   final Transaction transaction;
@@ -34,8 +35,8 @@ class TransactionDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 28),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
           padding: const EdgeInsets.only(left: 16),
         ),
         title: const Text(
@@ -109,7 +110,7 @@ class TransactionDetailScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Rp${transaction.totalPrice}',
+                        Utils.formatRupiah(transaction.totalPrice),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -199,7 +200,7 @@ class TransactionDetailScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Qty: ${item['quantity']} x Rp${item['price']}',
+                                    'Qty: ${item['quantity']} x ' + Utils.formatRupiah(item['price']),
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[600],
@@ -209,7 +210,7 @@ class TransactionDetailScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Rp${int.parse(item['price'].toString()) * int.parse(item['quantity'].toString())}',
+                              Utils.formatRupiah(int.parse(item['price'].toString()) * int.parse(item['quantity'].toString())),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

@@ -155,7 +155,7 @@ class PromoScreen extends StatelessWidget {
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacementNamed(context, '/main');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF171717),

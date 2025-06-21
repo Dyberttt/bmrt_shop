@@ -10,6 +10,7 @@ import 'package:bmrt_shop/services/product_service.dart';
 import 'package:bmrt_shop/models/product.dart';
 import 'package:bmrt_shop/services/seed_data.dart';
 import 'package:logger/logger.dart';
+import 'package:bmrt_shop/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -542,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Row(
                                             children: [
                                               Text(
-                                                'Rp ${product.price.toStringAsFixed(0)}',
+                                                Utils.formatRupiah(product.price),
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w700,
@@ -553,7 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               if (product.discount != null && product.discount! > 0) ...[
                                                 const SizedBox(width: 4),
                                                 Text(
-                                                  'Rp ${product.priceBeforeDiscount.toStringAsFixed(0)}',
+                                                  Utils.formatRupiah(product.priceBeforeDiscount),
                                                   style: TextStyle(
                                                     fontSize: 10,
                                                     decoration: TextDecoration.lineThrough,

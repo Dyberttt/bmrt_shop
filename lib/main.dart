@@ -9,6 +9,8 @@ import 'package:bmrt_shop/screens/splash_screen.dart';
 import 'package:bmrt_shop/firebase_options.dart';
 import 'package:logging/logging.dart';
 import 'package:bmrt_shop/models/transaction.dart';
+import 'package:bmrt_shop/services/product_service.dart';
+import 'package:bmrt_shop/services/transaction_service.dart';
 
 // Deferred imports
 import 'package:bmrt_shop/screens/login_screen.dart' deferred as login;
@@ -67,6 +69,8 @@ void main() {
             ChangeNotifierProvider(create: (_) => _getOrCreateProvider<AuthService>(AuthService())),
             ChangeNotifierProvider(create: (_) => _getOrCreateProvider<CartProvider>(CartProvider())),
             ChangeNotifierProvider(create: (_) => _getOrCreateProvider<WishlistProvider>(WishlistProvider())),
+            ChangeNotifierProvider(create: (_) => _getOrCreateProvider<ProductService>(ProductService())),
+            ChangeNotifierProvider(create: (_) => _getOrCreateProvider<TransactionService>(TransactionService())),
           ],
           child: const MyApp(),
         ),

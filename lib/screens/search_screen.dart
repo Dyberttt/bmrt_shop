@@ -115,14 +115,14 @@ class _SearchScreenState extends State<SearchScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF171717)),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
             onPressed: () {
               if (_showSuggestions) {
                 setState(() {
                   _showSuggestions = false;
                 });
               } else {
-                Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(context, '/main');
               }
             },
           ),
@@ -313,7 +313,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         const SizedBox(height: 4),
                         Text(
-                          'Rp ${product.price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
+                          Utils.formatRupiah(product.price),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

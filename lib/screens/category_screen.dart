@@ -4,6 +4,7 @@ import 'package:bmrt_shop/services/product_service.dart';
 import 'package:bmrt_shop/models/product.dart';
 import 'package:bmrt_shop/screens/product_detail_screen.dart';
 import 'package:bmrt_shop/services/seed_data.dart';
+import 'package:bmrt_shop/utils/utils.dart';
 
 class CategoryScreen extends StatefulWidget {
   final String? initialCategory;
@@ -309,7 +310,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   ),
                                   const SizedBox(height: 3),
                                   Text(
-                                    'Rp ${product.price.toStringAsFixed(0)}',
+                                    Utils.formatRupiah(product.price),
                                     style: const TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w600,

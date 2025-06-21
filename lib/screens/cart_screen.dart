@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bmrt_shop/providers/cart.dart';
+import 'package:bmrt_shop/utils/utils.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -173,7 +174,7 @@ class CartScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Rp ${cartItem.price.toStringAsFixed(0)}',
+                                Utils.formatRupiah(cartItem.price),
                                 style: const TextStyle(
                                   color: Color(0xFF1A1A1A),
                                   fontWeight: FontWeight.w600,
@@ -278,7 +279,7 @@ class CartScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Rp ${cart.totalAmount.toStringAsFixed(0)}',
+                            Utils.formatRupiah(cart.totalAmount),
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
