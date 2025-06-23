@@ -384,285 +384,287 @@ class CheckoutScreenState extends State<CheckoutScreen> {
           },
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(24),
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(20),
-              leading: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A).withAlpha(26),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(Icons.location_on, color: Color(0xFF1A1A1A), size: 28),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
               ),
-              title: const Text(
-                'Rumah · Firman Chandra',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              subtitle: const Text(
-                'Jl. Kp Tanjung, Lubug Begalung, Sumatera Barat',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              trailing: const Icon(Icons.chevron_right, color: Color(0xFF1A1A1A), size: 28),
-              onTap: () {},
-            ),
-          ),
-          const SizedBox(height: 32),
-          const Text(
-            'Pesanan Kamu',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1A1A1A),
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 20),
-          ...items.map((item) => _buildItemTile(item)),
-          const SizedBox(height: 32),
-          const Text(
-            'Pilih Pengiriman',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1A1A1A),
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: _buildShippingOption('Standard (Rp0) - Est. tiba 6-12 Jun'),
-          ),
-          const SizedBox(height: 32),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                CheckboxListTile(
-                  value: _useInsurance,
-                  onChanged: (v) => setState(() => _useInsurance = v!),
-                  title: const Text(
-                    'Pakai Asuransi Pengiriman (Rp400)',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 0.3,
-                    ),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(20),
+                leading: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A1A).withAlpha(26),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  activeColor: const Color(0xFF1A1A1A),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: const Icon(Icons.location_on, color: Color(0xFF1A1A1A), size: 28),
                 ),
-                const Divider(height: 1),
-                CheckboxListTile(
-                  value: _useProtection,
-                  onChanged: (v) => setState(() => _useProtection = v!),
-                  title: const Text(
-                    'Proteksi Rusak Uang Kembali 100% (Rp1250/item)',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  activeColor: const Color(0xFF1A1A1A),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-          const Text(
-            'Metode Pembayaran',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1A1A1A),
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                RadioListTile(
-                  value: 'COD (Bayar di Tempat)',
-                  groupValue: _selectedPayment,
-                  onChanged: (value) => setState(() => _selectedPayment = value!),
-                  title: const Text(
-                    'COD (Bayar di Tempat)',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  subtitle: Text(
-                    'Biaya tambahan ${(totalPrice * 0.01).roundToDouble().toStringAsFixed(0)}%',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  activeColor: const Color(0xFF1A1A1A),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                ),
-                const Divider(height: 1),
-                RadioListTile(
-                  value: 'Transfer Bank',
-                  groupValue: _selectedPayment,
-                  onChanged: (value) => setState(() => _selectedPayment = value!),
-                  title: const Text(
-                    'Transfer Bank',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  subtitle: const Text(
-                    'Transfer ke rekening BCA',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  activeColor: const Color(0xFF1A1A1A),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Ringkasan Belanja',
+                title: const Text(
+                  'Rumah · Firman Chandra',
                   style: TextStyle(
-                    fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1A1A1A),
+                    fontSize: 18,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+                subtitle: const Text(
+                  'Jl. Kp Tanjung, Lubug Begalung, Sumatera Barat',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+                trailing: const Icon(Icons.chevron_right, color: Color(0xFF1A1A1A), size: 28),
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Text(
+              'Pesanan Kamu',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1A1A1A),
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ...items.map((item) => _buildItemTile(item)),
+            const SizedBox(height: 32),
+            const Text(
+              'Pilih Pengiriman',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1A1A1A),
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
+              ),
+              child: _buildShippingOption('Standard (Rp0) - Est. tiba 6-12 Jun'),
+            ),
+            const SizedBox(height: 32),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  CheckboxListTile(
+                    value: _useInsurance,
+                    onChanged: (v) => setState(() => _useInsurance = v!),
+                    title: const Text(
+                      'Pakai Asuransi Pengiriman (Rp400)',
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: const Color(0xFF1A1A1A),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  ),
+                  const Divider(height: 1),
+                  CheckboxListTile(
+                    value: _useProtection,
+                    onChanged: (v) => setState(() => _useProtection = v!),
+                    title: const Text(
+                      'Proteksi Rusak Uang Kembali 100% (Rp1250/item)',
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: const Color(0xFF1A1A1A),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Text(
+              'Metode Pembayaran',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1A1A1A),
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  RadioListTile(
+                    value: 'COD (Bayar di Tempat)',
+                    groupValue: _selectedPayment,
+                    onChanged: (value) => setState(() => _selectedPayment = value!),
+                    title: const Text(
+                      'COD (Bayar di Tempat)',
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Biaya tambahan ${(totalPrice * 0.01).roundToDouble().toStringAsFixed(0)}%',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    activeColor: const Color(0xFF1A1A1A),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  ),
+                  const Divider(height: 1),
+                  RadioListTile(
+                    value: 'Transfer Bank',
+                    groupValue: _selectedPayment,
+                    onChanged: (value) => setState(() => _selectedPayment = value!),
+                    title: const Text(
+                      'Transfer Bank',
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Transfer ke rekening BCA',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    activeColor: const Color(0xFF1A1A1A),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Ringkasan Belanja',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1A1A1A),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildSummaryRow('Total Harga (${items.length} Barang)', totalPrice),
+                  _buildSummaryRow('Total Ongkos Kirim', shippingFee),
+                  _buildSummaryRow('Total Asuransi Pengiriman', insuranceFee),
+                  _buildSummaryRow('Total Biaya Proteksi', protectionFee),
+                  _buildSummaryRow('Biaya Bayar di Tempat', codFee),
+                  const Divider(height: 32),
+                  _buildSummaryRow('Diskon Barang', -discountItems),
+                  _buildSummaryRow('Diskon Ongkir', -discountShipping),
+                  const Divider(height: 32, thickness: 2),
+                  _buildSummaryRow('Total Tagihan', total, isBold: true),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(26),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_selectedPayment == 'Transfer Bank') {
+                    _showTransferDialog(context, total);
+                  } else {
+                    _processPayment(context, total);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF171717),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Bayar Sekarang',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                     letterSpacing: 0.5,
                   ),
                 ),
-                const SizedBox(height: 20),
-                _buildSummaryRow('Total Harga (${items.length} Barang)', totalPrice),
-                _buildSummaryRow('Total Ongkos Kirim', shippingFee),
-                _buildSummaryRow('Total Asuransi Pengiriman', insuranceFee),
-                _buildSummaryRow('Total Biaya Proteksi', protectionFee),
-                _buildSummaryRow('Biaya Bayar di Tempat', codFee),
-                const Divider(height: 32),
-                _buildSummaryRow('Diskon Barang', -discountItems),
-                _buildSummaryRow('Diskon Ongkir', -discountShipping),
-                const Divider(height: 32, thickness: 2),
-                _buildSummaryRow('Total Tagihan', total, isBold: true),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(26),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
-            ),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_selectedPayment == 'Transfer Bank') {
-                  _showTransferDialog(context, total);
-                } else {
-                  _processPayment(context, total);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF171717),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'Bayar Sekarang',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 0.5,
-                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

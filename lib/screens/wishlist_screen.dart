@@ -5,6 +5,12 @@ import 'package:bmrt_shop/providers/wishlist.dart';
 import 'package:bmrt_shop/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bmrt_shop/models/product.dart';
+import 'package:share_plus/share_plus.dart';
+
+void shareWishlist(List<String> wishlistItems) {
+  final text = 'Wishlist saya di BMRT Shop:\n${wishlistItems.join(', ')}';
+  Share.share(text);
+}
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -31,6 +37,18 @@ class WishlistScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
           onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () {
+              // Contoh: ambil data wishlist dari provider
+              // final wishlist = Provider.of<WishlistProvider>(context, listen: false).items;
+              // shareWishlist(wishlist.map((item) => item.name).toList());
+              // Untuk contoh, gunakan list statis:
+              shareWishlist(['Produk A', 'Produk B', 'Produk C']);
+            },
+          ),
+        ],
       ),
       body: wishlist.wishlistItems.isEmpty
           ? _buildEmptyWishlist(context)

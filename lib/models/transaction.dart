@@ -12,6 +12,7 @@ class Transaction {
   final double discountItems;
   final double discountShipping;
   String status;
+  String? shippingStatus;
   final DateTime timestamp;
 
   Transaction({
@@ -27,6 +28,7 @@ class Transaction {
     required this.discountShipping,
     required this.status,
     required this.timestamp,
+    this.shippingStatus,
   });
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
@@ -43,6 +45,7 @@ class Transaction {
       discountShipping: (map['discountShipping'] ?? 0.0).toDouble(),
       status: map['status'] ?? 'pending',
       timestamp: (map['timestamp'] as Timestamp).toDate(),
+      shippingStatus: map['shippingStatus'],
     );
   }
 
@@ -60,6 +63,7 @@ class Transaction {
       'discountShipping': discountShipping,
       'status': status,
       'timestamp': timestamp,
+      'shippingStatus': shippingStatus,
     };
   }
 }

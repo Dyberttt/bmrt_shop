@@ -231,6 +231,61 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Section Poin Loyalty
+          FutureBuilder<int>(
+            future: authService.getUserPoints(),
+            builder: (context, snapshot) {
+              final points = snapshot.data ?? 0;
+              return Container(
+                width: width,
+                margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.amber[50],
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(13),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Poin Loyalty', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        SizedBox(height: 4),
+                        Text('$points poin', style: TextStyle(fontSize: 20, color: Colors.orange[900], fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: points >= 100
+                          ? () async {
+                              await authService.redeemPoints(100);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Berhasil menukar 100 poin!')),
+                                );
+                              }
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        elevation: 0,
+                      ),
+                      child: Text('Tukar 100 Poin'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           // VIP Card
           Container(
             margin: const EdgeInsets.all(16),

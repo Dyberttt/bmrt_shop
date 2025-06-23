@@ -72,6 +72,34 @@ class TransactionDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (transaction.shippingStatus != null && transaction.shippingStatus!.isNotEmpty)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Status Pengiriman',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blueGrey[600],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[100],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            transaction.shippingStatus!,
+                            style: TextStyle(
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -200,7 +228,7 @@ class TransactionDetailScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Qty: ${item['quantity']} x ' + Utils.formatRupiah(item['price']),
+                                    'Qty: \\${item['quantity']} x \\${Utils.formatRupiah(item['price'])}',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[600],

@@ -55,22 +55,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
         ),
         leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade300, width: 1.2),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
-          ),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF171717), size: 24),
           onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
           padding: const EdgeInsets.only(left: 16),
         ),

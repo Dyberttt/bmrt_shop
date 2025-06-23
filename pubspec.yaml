@@ -26,7 +26,10 @@ dependencies:
   geolocator: ^14.0.1
   firebase_storage: ^12.4.7
   file_picker: ^10.1.9
-  js: ^0.7.2
+  js: ^0.6.3
+  share_plus: ^11.0.0
+  flutter_rating_bar: ^4.0.1
+  firebase_messaging: ^15.2.7
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,8 @@ import 'package:bmrt_shop/providers/cart.dart';
 import 'package:bmrt_shop/providers/wishlist.dart';
 import 'package:bmrt_shop/utils/utils.dart';
 import 'package:bmrt_shop/widgets/cart_icon.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
@@ -15,6 +17,21 @@ class ProductDetailScreen extends StatefulWidget {
 
 class ProductDetailScreenState extends State<ProductDetailScreen> {
   bool _isDescriptionExpanded = false;
+  double _userRating = 0;
+  final TextEditingController _reviewController = TextEditingController();
+
+  void _submitReview(String productId) async {
+    if (_userRating == 0 || _reviewController.text.trim().isEmpty) return;
+    await FirebaseFirestore.instance.collection('products').doc(productId).collection('reviews').add({
+      'rating': _userRating,
+      'review': _reviewController.text.trim(),
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    setState(() {
+      _userRating = 0;
+      _reviewController.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -362,6 +379,79 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ],
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Review & Rating', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('products')
+                              .doc(product.id)
+                              .collection('reviews')
+                              .orderBy('timestamp', descending: true)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+                            final reviews = snapshot.data!.docs;
+                            if (reviews.isEmpty) {
+                              return const Text('Belum ada review. Jadilah yang pertama!');
+                            }
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: reviews.length,
+                              itemBuilder: (context, index) {
+                                final review = reviews[index];
+                                return ListTile(
+                                  leading: RatingBarIndicator(
+                                    rating: (review['rating'] ?? 0).toDouble(),
+                                    itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                                    itemCount: 5,
+                                    itemSize: 20.0,
+                                  ),
+                                  title: Text(review['review'] ?? ''),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        const Text('Tulis Review Anda:', style: TextStyle(fontWeight: FontWeight.w500)),
+                        const SizedBox(height: 8),
+                        RatingBar.builder(
+                          initialRating: _userRating,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: false,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                          itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              _userRating = rating;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _reviewController,
+                          decoration: InputDecoration(
+                            hintText: 'Tulis review di sini...',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 2,
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: () => _submitReview(product.id),
+                          child: const Text('Kirim Review'),
                         ),
                       ],
                     ),

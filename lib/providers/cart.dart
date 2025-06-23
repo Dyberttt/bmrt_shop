@@ -101,7 +101,9 @@ class CartProvider with ChangeNotifier {
   }
 
   double get discountItems {
-    // TODO: implement discount logic
+    if (totalAmount > 500000) {
+      return totalAmount * 0.10;
+    }
     return 0;
   }
 

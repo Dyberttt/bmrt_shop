@@ -11,6 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:bmrt_shop/models/transaction.dart';
 import 'package:bmrt_shop/services/product_service.dart';
 import 'package:bmrt_shop/services/transaction_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // Deferred imports
 import 'package:bmrt_shop/screens/login_screen.dart' deferred as login;
@@ -45,11 +46,16 @@ void main() {
       _isHotRestarting = false;
     }
     
-    // Inisialisasi Firebase dan load library secara paralel
+    // Inisialisasi Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    // Inisialisasi Firebase Messaging
+    await _initFirebaseMessaging();
+    
+    // Inisialisasi library secara paralel
     final futures = <Future>[
-      Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
       // Pre-load library yang sering digunakan
       home.loadLibrary(),
       login.loadLibrary(),
@@ -83,6 +89,28 @@ void main() {
     logger.severe('Stack: $stack');
   });
 }
+
+Future<void> _initFirebaseMessaging() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission();
+
+  // Handler notifikasi saat app foreground
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      // Tampilkan notifikasi sebagai snackbar
+      final context = navigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message.notification!.title ?? 'Promo!', style: TextStyle(fontWeight: FontWeight.bold)),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  });
+}
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Helper function untuk mendapatkan atau membuat provider dari cache
 T _getOrCreateProvider<T>(T provider) {
@@ -119,23 +147,39 @@ void handleHotRestart() {
   _providerCache.clear();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = false;
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'BMRT Watch',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFF1A1A1A),
-        scaffoldBackgroundColor: const Color(0xFFF8F8F8),
+        brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF1A1A1A),
+          brightness: Brightness.light,
           primary: const Color(0xFF1A1A1A),
           secondary: const Color(0xFF1A1A1A),
           surface: const Color(0xFFF8F8F8),
         ),
+        primaryColor: const Color(0xFF1A1A1A),
+        scaffoldBackgroundColor: const Color(0xFFF8F8F8),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -180,7 +224,81 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const SplashScreen(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.white,
+          brightness: Brightness.dark,
+          primary: Colors.white,
+          secondary: Colors.white,
+          surface: const Color(0xFF181818),
+        ),
+        primaryColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xFF181818),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          elevation: 8,
+        ),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+          ),
+          titleMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.3,
+          ),
+          bodyMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.3,
+          ),
+        ),
+      ),
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      home: Builder(
+        builder: (context) => Stack(
+          children: [
+            SplashScreen(),
+            Positioned(
+              top: 40,
+              right: 20,
+              child: FloatingActionButton.small(
+                heroTag: 'theme_toggle',
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                onPressed: _toggleTheme,
+                tooltip: 'Ganti Mode Gelap/Terang',
+                child: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
+              ),
+            ),
+          ],
+        ),
+      ),
       routes: {
         '/login': (context) => login.LoginScreen(),
         '/register': (context) => register.RegisterScreen(),

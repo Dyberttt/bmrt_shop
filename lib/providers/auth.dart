@@ -60,6 +60,7 @@ class AuthService with ChangeNotifier {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
         'createdAt': FieldValue.serverTimestamp(),
+        'points': 0,
       });
 
       return userCredential;
@@ -89,5 +90,27 @@ class AuthService with ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+  }
+
+  Future<int> getUserPoints() async {
+    if (_user == null) return 0;
+    final doc = await _firestore.collection('users').doc(_user!.uid).get();
+    return (doc.data()?['points'] ?? 0) as int;
+  }
+
+  Future<void> addPoints(int amount) async {
+    if (_user == null) return;
+    await _firestore.collection('users').doc(_user!.uid).update({
+      'points': FieldValue.increment(amount),
+    });
+    notifyListeners();
+  }
+
+  Future<void> redeemPoints(int amount) async {
+    if (_user == null) return;
+    await _firestore.collection('users').doc(_user!.uid).update({
+      'points': FieldValue.increment(-amount),
+    });
+    notifyListeners();
   }
 }

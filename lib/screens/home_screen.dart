@@ -11,6 +11,10 @@ import 'package:bmrt_shop/models/product.dart';
 import 'package:bmrt_shop/services/seed_data.dart';
 import 'package:logger/logger.dart';
 import 'package:bmrt_shop/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:bmrt_shop/screens/qr_scanner_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -94,6 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
+          if (!kIsWeb)
+            IconButton(
+              icon: const Icon(Icons.qr_code_scanner, color: Color(0xFF1A1A1A), size: 24),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const QRScannerScreen()),
+                );
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.refresh, color: Color(0xFF1A1A1A), size: 24),
             onPressed: () async {
@@ -178,6 +192,156 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Banner Promo dari Firestore
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('promos').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return SizedBox();
+                final promos = snapshot.data!.docs;
+                if (promos.isEmpty) return SizedBox();
+                return SizedBox(
+                  height: size.height * 0.22,
+                  child: PageView.builder(
+                    itemCount: promos.length,
+                    itemBuilder: (context, index) {
+                      final promo = promos[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: promo['image'] != null
+                              ? DecorationImage(
+                                  image: NetworkImage(promo['image']),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                          color: Colors.blue[100],
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.black.withAlpha((0.2 * 255).toInt()),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                promo['title'] ?? '',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                promo['subtitle'] ?? '',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+
+            // Section Rekomendasi Produk Otomatis
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(
+                'Rekomendasi untuk Anda',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('products').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return SizedBox();
+                final products = snapshot.data!.docs;
+                // Hitung rata-rata rating setiap produk
+                List<Map<String, dynamic>> productList = products.map((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  return {
+                    'id': doc.id,
+                    'name': data['name'],
+                    'price': data['price'],
+                    'image': data['image'],
+                  };
+                }).toList();
+                // Untuk contoh, tampilkan 5 produk pertama
+                final recommended = productList.take(5).toList();
+                return SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recommended.length,
+                    itemBuilder: (context, index) {
+                      final prod = recommended[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/product_detail',
+                            arguments: prod,
+                          );
+                        },
+                        child: Container(
+                          width: 140,
+                          margin: const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(13),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                                child: prod['image'] != null
+                                    ? Image.network(prod['image'], height: 90, width: 140, fit: BoxFit.cover)
+                                    : Container(height: 90, width: 140, color: Colors.grey[200]),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  prod['name'] ?? '',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  prod['price'] != null ? Utils.formatRupiah(prod['price']) : '',
+                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 13),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+
             // Banner Carousel
             Container(
               height: size.height * 0.25,
